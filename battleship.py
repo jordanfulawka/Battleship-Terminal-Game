@@ -34,26 +34,41 @@ class Board:
   def validate_input(self, positions, user_input):
     if user_input == 'W':
       for position in positions:
-        if position[0] == 0:
-          return False
+        if position[0] == 0 or [position[0]-1, position[1]] in self.occupied:
+          return 0
     elif user_input == 'S':
       for position in positions:
-        if position[0] == 4:
-          return False
+        if position[0] == 4 or [position[0]+1,position[1]] in self.occupied:
+          return 0
     elif user_input == 'A':
       for position in positions:
         if position[1] == 0:
-          return False
+          return 0
+        elif [position[0],position[1]-1] in self.occupied:
+          if [position[0],position[1]-2] in self.occupied:
+            return 0
+          return 2
     elif user_input == 'D':
       for position in positions:
         if position[1] == 4:
           return False
+        elif [position[0],position[1]+1] in self.occupied:
+          if [position[0], position[1]+2] in self.occupied:
+            return 0
+          return 2
     elif user_input == 'R':
-      for position in positions:
-        if [position[1], position[0]] in self.occupied:
-          return False
-    return True
-
+      counter = 0
+      if positions[1][0] == positions[0][0] + 1:
+        for position in positions:
+          if [position[0],position[1]+counter] in self.occupied or position[1]+counter>4:
+            return 0
+          counter += 1
+      else:
+        for position in positions:
+          if [position[0]+counter,position[1]] in self.occupied or position[0]+counter>4:
+            return 0
+          counter += 1
+    return 1
 
   def place_ships(self, squares):
     positions = squares
@@ -66,24 +81,32 @@ class Board:
       print("R: Rotate", "W: Up", "S: Down", "A: Left", "D: Right", "Space: Place")
       user_input = input()
       user_input = user_input.upper()
-      if(self.validate_input(positions,user_input)):
+      num = self.validate_input(positions,user_input)
+      if(num):
         if user_input == "D":
           for position in positions:
-            position[1] += 1
+            position[1] += num
         elif user_input == 'A':
           for position in positions:
-            position[1] -= 1
+            position[1] -= num
         elif user_input == 'W':
           for position in positions:
-            position[0] -= 1
+            position[0] -= num
         elif user_input == 'S':
           for position in positions:
-            position[0] += 1
+            position[0] += num
         elif user_input == 'R':
-          for position in positions:
-            temp = position[0]
-            position[0] = position[1]
-            position[1] = temp
+          counter = 0
+          if positions[1][0] == positions[0][0] + 1:
+            for position in positions:
+              position[0] = positions[0][0]
+              position[1] += counter
+              counter += 1
+          else:
+            for position in positions:
+              position[1] = positions[0][1]
+              position[0] += counter
+              counter += 1
         elif user_input == 'P':
           for position in positions:
             self.board[position[0]][position[1]] = '■'
@@ -91,13 +114,13 @@ class Board:
             self.occupied.append([position[0], position[1]])
     self.print_board() 
 
-
 class Player():
   def __init__(self):
     self.playerboard = Board()
   def place_ships(self):
     self.playerboard.place_ships([[0,0],[1,0],[2,0],[3,0]])
     self.playerboard.place_ships([[0,0],[1,0],[2,0]])
+    self.playerboard.place_ships([[0,0],[1,0]])
     
 player1 = Player()
 player1.place_ships()
