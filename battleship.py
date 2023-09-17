@@ -15,8 +15,9 @@ class Board:
       print("")
     
   def preview_board(self, squares):
-    temp_board = self.board.copy()
+    temp_board = [[' ',' ',' ',' ',' ',],[' ',' ',' ',' ',' ',],[' ',' ',' ',' ',' ',],[' ',' ',' ',' ',' ',],[' ',' ',' ',' ',' ',]]
     for square in squares:
+      print(square)
       temp_board[square[0]][square[1]] = 'X'
     print("   1  2  3  4  5 ")
     rows = ['A','B','C','D','E']
@@ -28,41 +29,39 @@ class Board:
         print("[{}]".format(square), end='')
       print("")
 
-  def validate_input(self, square):
-    if len(square) != 2: 
-      print("Length incorrect")
-      return False
-    if square[0] not in self.square_mapping: 
-      print("First letter wrong")
-      return False
-    if square[1] not in self.square_mapping: 
-      print("Second number wrong")
-      return False
-    if self.board[self.square_mapping[square[0]]][self.square_mapping[square[1]]] != ' ': 
-      print("Spot is taken")
-      return False
-    return True
-
   def place_ships(self):
-    # self.print_board()
     positions = [[0,0],[1,0],[2,0],[3,0]]
     confirmed = 0
-    while (confirmed == 0):
-      self.preview_board(positions)
-      print("R: Rotate", "U: Up", "D: Down", "L: Left", "R: Right", "P: Place")
+    while (confirmed != 1):
+      try:
+        self.preview_board(positions)
+      except IndexError:
+        print("Invalid")
+      print("R: Rotate", "W: Up", "S: Down", "A: Left", "D: Right", "Space: Place")
       user_input = input()
       user_input = user_input.upper()
-      if user_input == "R":
+      if user_input == "D":
         for position in positions:
           position[1] += 1
-
+      elif user_input == 'A':
+        for position in positions:
+          position[1] -= 1
+      elif user_input == 'W':
+        for position in positions:
+          position[0] -= 1
+      elif user_input == 'S':
+        for position in positions:
+          position[0] += 1
+      elif user_input == 'R':
+        for position in positions:
+          temp = position[0]
+          position[0] = position[1]
+          position[1] = temp
 
 
 class Player():
   def __init__(self):
     self.playerboard = Board()
-    # self.board.print_board()
-  
   def place_ships(self):
     self.playerboard.place_ships()
     
