@@ -31,11 +31,12 @@ class Board:
       print("")
     
   def preview_board(self, squares):
+    print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
     temp_board = [[' ',' ',' ',' ',' ',],[' ',' ',' ',' ',' ',],[' ',' ',' ',' ',' ',],[' ',' ',' ',' ',' ',],[' ',' ',' ',' ',' ',]]
     for square in self.occupied:
       temp_board[square[0]][square[1]] = '■'
     for square in squares:
-      temp_board[square[0]][square[1]] = 'X'
+      temp_board[square[0]][square[1]] = '△'
     print("   1  2  3  4  5 ")
     rows = ['A','B','C','D','E']
     row_num = 0
@@ -47,10 +48,12 @@ class Board:
       print("")
     
   def validate_input(self, target, player):
+    if len(target) != 2: return False
     if target[0].upper() not in ['A','B','C','D','E']: return False
     if target[1] not in ['1','2','3','4','5']: return False
     if self.guessing_board[self.square_mapping[target[0].upper()]][self.square_mapping[target[1]]] != ' ': return False
 
+    print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
     if player.playerboard.board[self.square_mapping[target[0].upper()]][self.square_mapping[target[1]]] == '■':
       self.guessing_board[self.square_mapping[target[0].upper()]][self.square_mapping[target[1]]] = 'X'
       self.print_guessing_board()
@@ -121,6 +124,7 @@ class Board:
         except IndexError:
           print("Invalid")
         print("R: Rotate", "W: Up", "S: Down", "A: Left", "D: Right", "Space: Place")
+        print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
         user_input = input()
         user_input = user_input.upper()
         num = self.validate_position(positions,user_input)
@@ -244,8 +248,10 @@ class Player:
       while(True): 
         self.playerboard.print_guessing_board()
         print("Player 1: Please guess a square")
+        print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
         target = input()
         if(not self.playerboard.validate_input(target, player2)):
+          print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
           print("Invalid input! Please try again")
         else: break
     else:
@@ -274,12 +280,70 @@ class Game:
   def __init__(self):
     self.player1 = Player()
     self.player2 = Player(1)
+    print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
+
+    print("""
+          
+          
+Welcome to my Battleship Game!
+          
+          
+          """)
+    print("-----------------------------")
+    time.sleep(2)
+    print("""
+          
+          
+You will be playing against a computer on a 5x5 grid
+          
+          
+    """)
+    print("-----------------------------")
+    time.sleep(2)
+    print("""
+          
+          
+You will have 3 ships, all of different sizes.
+          
+          
+    """)
+    print("-----------------------------")
+    time.sleep(2)
+    print("""
+          
+          
+When placing your ships, the ship you're currently placing will be marked as △, until it is placed and then will be marked ■
+          
+          
+    """)
+    print("-----------------------------")
+    time.sleep(4)
+    print("""
+          
+          
+Ships that are hit will be marked as an X, and misses as 0
+          
+          
+    """)
+    print("-----------------------------")
+    time.sleep(2)
+    print("""
+          
+          
+Have fun and good luck!
+          
+          
+    """)
+    print("-----------------------------")
+
+
+  def start_game(self):
     self.player1.place_ships()
     self.player2.place_ships()
+    print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
     print("Here is your board: ")
     self.player1.playerboard.print_board()
-  
-  def start_game(self):
+
     game_over = 0
     while(not game_over):
       self.player1.take_turn(self.player1, self.player2)
